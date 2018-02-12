@@ -12,6 +12,8 @@ const (
 	Kubernetes string = "Kubernetes"
 	// SwarmMode is the string constant for the Swarm Mode orchestrator type
 	SwarmMode string = "SwarmMode"
+	// OpenShift is the string constant for the OpenShift orchestrator type
+	OpenShift string = "OpenShift"
 )
 
 // validation values
@@ -56,6 +58,17 @@ const (
 	// KubernetesDefaultVersion is the default Kubernetes version
 	KubernetesDefaultVersion string = "1.8.9"
 )
+
+const (
+	// OpenShiftVersion1Dot7Dot0 is the major.minor.patch string for the 1.7.0 version of OpenShift
+	OpenShiftVersion3Dot7Dot0 string = "3.7.0"
+	OpenShiftDefaultVersion   string = OpenShiftVersion3Dot7Dot0
+)
+
+// GetAllSupportedOpenShiftVersions returns a slice of all supported OpenShift versions.
+func GetAllSupportedOpenShiftVersions() []string {
+	return []string{OpenShiftVersion3Dot7Dot0}
+}
 
 const (
 	// DCOSVersion1Dot10Dot0 is the major.minor.patch string for 1.10.0 versions of DCOS
