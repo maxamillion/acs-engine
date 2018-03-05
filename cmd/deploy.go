@@ -308,5 +308,7 @@ func (dc *deployCmd) run() error {
 		log.Fatalln(err)
 	}
 
+	// TODO: print ARM template outputs here?
+
 	return nil
 }
