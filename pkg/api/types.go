@@ -311,6 +311,7 @@ type OpenShiftConfig struct {
 	ImageName          string `json:"imageName,omitempty"`
 
 	ConfigBundles map[string][]byte `json:"-"`
+	InfraNodes    map[string]bool   `json:"-"`
 }
 
 // MasterProfile represents the definition of the master cluster
