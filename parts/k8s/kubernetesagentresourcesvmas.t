@@ -270,7 +270,11 @@
         "autoUpgradeMinorVersion": true,
         "settings": {},
         "protectedSettings": {
+        {{if IsOpenShift }}
+          "script": "{{ Base64 (OpenShiftGetNodeSh .) }}"
+        {{else}}
           "commandToExecute": "[concat(variables('provisionScriptParametersCommon'),' /usr/bin/nohup /bin/bash -c \"/bin/bash /opt/azure/containers/provision.sh >> /var/log/azure/cluster-provision.log 2>&1\"')]"
+        {{end}}
         }
       }
     }

@@ -299,10 +299,11 @@ type DcosConfig struct {
 
 // OpenShiftConfig holds configuration for OpenShift
 type OpenShiftConfig struct {
-	Location           string `json:"location,omitempty"`
-	RouterIP           string `json:"routerip,omitempty"`
-	ImageResourceGroup string `json:"imageResourceGroup,omitempty"`
-	ImageName          string `json:"imageName,omitempty"`
+	KubernetesConfig   *KubernetesConfig `json:"kubernetesConfig,omitempty"`
+	Location           string            `json:"location,omitempty"`
+	RouterIP           string            `json:"routerip,omitempty"`
+	ImageResourceGroup string            `json:"imageResourceGroup,omitempty"`
+	ImageName          string            `json:"imageName,omitempty"`
 }
 
 // MasterProfile represents the definition of the master cluster
@@ -323,6 +324,9 @@ type MasterProfile struct {
 	Distro                   Distro            `json:"distro,omitempty"`
 	KubernetesConfig         *KubernetesConfig `json:"kubernetesConfig,omitempty"`
 	ImageRef                 *ImageReference   `json:"imageReference,omitempty"`
+
+	ImageName          string `json:"imageName,omitempty"`
+	ImageResourceGroup string `json:"imageResourceGroup,omitempty"`
 
 	// subnet is internal
 	subnet string
@@ -378,6 +382,7 @@ type AgentPoolProfile struct {
 	Distro              Distro            `json:"distro,omitempty"`
 	KubernetesConfig    *KubernetesConfig `json:"kubernetesConfig,omitempty"`
 	ImageRef            *ImageReference   `json:"imageReference,omitempty"`
+	IsOpenShiftInfra    bool              `json:"isOpenShiftInfra,omitempty"`
 
 	// subnet is internal
 	subnet string
@@ -386,6 +391,9 @@ type AgentPoolProfile struct {
 	CustomNodeLabels      map[string]string `json:"customNodeLabels,omitempty"`
 	PreProvisionExtension *Extension        `json:"preProvisionExtension"`
 	Extensions            []Extension       `json:"extensions"`
+
+	ImageName          string `json:"imageName,omitempty"`
+	ImageResourceGroup string `json:"imageResourceGroup,omitempty"`
 }
 
 // AADProfile specifies attributes for AAD integration

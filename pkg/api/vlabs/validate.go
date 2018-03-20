@@ -175,8 +175,8 @@ func (o *OrchestratorProfile) Validate(isUpdate bool) error {
 		}
 	}
 
-	if o.OrchestratorType != Kubernetes && o.KubernetesConfig != nil {
-		return fmt.Errorf("KubernetesConfig can be specified only when OrchestratorType is Kubernetes")
+	if (o.OrchestratorType != Kubernetes && o.OrchestratorType != OpenShift) && o.KubernetesConfig != nil {
+		return fmt.Errorf("KubernetesConfig can be specified only when OrchestratorType is Kubernetes or OpenShift")
 	}
 
 	if o.OrchestratorType != OpenShift && o.OpenShiftConfig != nil {

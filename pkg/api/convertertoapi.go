@@ -366,8 +366,7 @@ func convertVLabsProperties(vlabs *vlabs.Properties, api *Properties) {
 		apiProfile := &AgentPoolProfile{}
 		convertVLabsAgentPoolProfile(p, apiProfile)
 		// by default vlabs will use managed disks for all orchestrators but kubernetes as it has encryption at rest.
-		if !api.OrchestratorProfile.IsKubernetes() {
-			// by default vlabs will use managed disks for all orchestrators but kubernetes as it has encryption at rest.
+		if !api.OrchestratorProfile.IsKubernetes() && !api.OrchestratorProfile.IsOpenShift() {
 			if len(p.StorageProfile) == 0 {
 				apiProfile.StorageProfile = ManagedDisks
 			}
@@ -565,7 +564,12 @@ func convertVLabsOrchestratorProfile(vp *vlabs.Properties, api *OrchestratorProf
 			api.OpenShiftConfig = &OpenShiftConfig{}
 			convertVLabsOpenShiftConfig(vlabscs.OpenShiftConfig, api.OpenShiftConfig)
 		}
-		setVlabsOpenShiftDefaults(vp, api)
+		// Set api.KubernetesConfig to api.OpenShiftConfig.KubernetesConfig so
+		// acs-engine can reuse the same code used for generating parameters from
+		// KubernetesConfig for OpenShiftConfig.
+		if api.OpenShiftConfig != nil && api.OpenShiftConfig.KubernetesConfig != nil {
+			api.KubernetesConfig = api.OpenShiftConfig.KubernetesConfig
+		}
 		api.OrchestratorVersion = common.RationalizeReleaseAndVersion(
 			vlabscs.OrchestratorType,
 			vlabscs.OrchestratorRelease,
@@ -612,10 +616,14 @@ func convertVLabsDcosConfig(vlabs *vlabs.DcosConfig, api *DcosConfig) {
 }
 
 func convertVLabsOpenShiftConfig(vlabs *vlabs.OpenShiftConfig, api *OpenShiftConfig) {
-	api.Location = vlabs.Location
+	// TODO: This is a hack to avoid breaking the rest of the acs-engine
+	// code when KubernetesConfig is accessed for various things. We don't
+	// use anything from it today,
+	api.KubernetesConfig = &KubernetesConfig{}
+	if vlabs.KubernetesConfig != nil {
+		convertVLabsKubernetesConfig(vlabs.KubernetesConfig, api.KubernetesConfig)
+	}
 	api.RouterIP = vlabs.RouterIP
-	api.ImageResourceGroup = vlabs.ImageResourceGroup
-	api.ImageName = vlabs.ImageName
 }
 
 func convertVLabsKubernetesConfig(vlabs *vlabs.KubernetesConfig, api *KubernetesConfig) {
@@ -657,21 +665,6 @@ func convertVLabsKubernetesConfig(vlabs *vlabs.KubernetesConfig, api *Kubernetes
 	convertAPIServerConfigToAPI(vlabs, api)
 	convertSchedulerConfigToAPI(vlabs, api)
 	convertPrivateClusterToAPI(vlabs, api)
-}
-
-func setVlabsOpenShiftDefaults(vp *vlabs.Properties, api *OrchestratorProfile) {
-	if api.OpenShiftConfig == nil {
-		api.OpenShiftConfig = &OpenShiftConfig{}
-	}
-	if api.OpenShiftConfig.Location == "" {
-		api.OpenShiftConfig.Location = "eastus"
-	}
-	if api.OpenShiftConfig.ImageResourceGroup == "" {
-		api.OpenShiftConfig.ImageResourceGroup = "opstest"
-	}
-	if api.OpenShiftConfig.ImageName == "" {
-		api.OpenShiftConfig.ImageName = "openshift-gi-1521492088"
-	}
 }
 
 func setVlabsKubernetesDefaults(vp *vlabs.Properties, api *OrchestratorProfile) {
@@ -962,6 +955,7 @@ func convertVLabsAgentPoolProfile(vlabs *vlabs.AgentPoolProfile, api *AgentPoolP
 		api.ImageRef.Name = vlabs.ImageRef.Name
 		api.ImageRef.ResourceGroup = vlabs.ImageRef.ResourceGroup
 	}
+	api.IsOpenShiftInfra = vlabs.IsOpenShiftInfra
 }
 
 func convertVLabsKeyVaultSecrets(vlabs *vlabs.KeyVaultSecrets, api *KeyVaultSecrets) {

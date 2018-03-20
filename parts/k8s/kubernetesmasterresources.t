@@ -1,3 +1,97 @@
+{{if IsOpenShift}}
+    {
+        "name": "router-lb",
+        "type": "Microsoft.Network/loadBalancers",
+        "apiVersion": "2017-10-01",
+        "location": "[variables('location')]",
+        "properties": {
+            "frontendIPConfigurations": [
+                {
+                    "name": "frontend",
+                    "properties": {
+                        "privateIPAllocationMethod": "Dynamic",
+                        "publicIPAddress": {
+                            "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'router-ip')]"
+                        }
+                    }
+                }
+            ],
+            "backendAddressPools": [
+                {
+                    "name": "backend"
+                }
+            ],
+            "loadBalancingRules": [
+                {
+                    "name": "port-80",
+                    "properties": {
+                        "frontendIPConfiguration": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'router-lb'), '/frontendIPConfigurations/frontend')]"
+                        },
+                        "frontendPort": 80,
+                        "backendPort": 80,
+                        "enableFloatingIP": false,
+                        "idleTimeoutInMinutes": 4,
+                        "protocol": "Tcp",
+                        "loadDistribution": "Default",
+                        "backendAddressPool": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'router-lb'), '/backendAddressPools/backend')]"
+                        },
+                        "probe": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'router-lb'), '/probes/port-80')]"
+                        }
+                    }
+                },
+                {
+                    "name": "port-443",
+                    "properties": {
+                        "frontendIPConfiguration": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'router-lb'), '/frontendIPConfigurations/frontend')]"
+                        },
+                        "frontendPort": 443,
+                        "backendPort": 443,
+                        "enableFloatingIP": false,
+                        "idleTimeoutInMinutes": 4,
+                        "protocol": "Tcp",
+                        "loadDistribution": "Default",
+                        "backendAddressPool": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'router-lb'), '/backendAddressPools/backend')]"
+                        },
+                        "probe": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'router-lb'), '/probes/port-443')]"
+                        }
+                    }
+                }
+            ],
+            "probes": [
+                {
+                    "name": "port-80",
+                    "properties": {
+                        "protocol": "Tcp",
+                        "port": 80,
+                        "intervalInSeconds": 5,
+                        "numberOfProbes": 2
+                    }
+                },
+                {
+                    "name": "port-443",
+                    "properties": {
+                        "protocol": "Tcp",
+                        "port": 443,
+                        "intervalInSeconds": 5,
+                        "numberOfProbes": 2
+                    }
+                }
+            ],
+            "inboundNatRules": [],
+            "outboundNatRules": [],
+            "inboundNatPools": []
+        },
+        "sku": {
+            "name": "Basic"
+        }
+    },
+{{end}}
 {{if .MasterProfile.IsManagedDisks}}
     {
       "apiVersion": "[variables('apiVersionStorageManagedDisks')]",
@@ -115,7 +209,7 @@
               "access": "Allow",
               "description": "Allow kube-apiserver (tls) traffic to master",
               "destinationAddressPrefix": "*",
-              "destinationPortRange": "443-443",
+              "destinationPortRange": {{if IsOpenShift}}"8443-8443"{{else}}"443-443"{{end}},
               "direction": "Inbound",
               "priority": 100,
               "protocol": "Tcp",
@@ -182,8 +276,8 @@
                 "id": "[concat(variables('masterLbID'), '/backendAddressPools/', variables('masterLbBackendPoolName'))]"
               },
               "protocol": "tcp",
-              "frontendPort": 443,
-              "backendPort": 443,
+              "frontendPort": {{if IsOpenShift}}8443{{else}}443{{end}},
+              "backendPort": {{if IsOpenShift}}8443{{else}}443{{end}},
               "enableFloatingIP": false,
               "idleTimeoutInMinutes": 5,
               "loadDistribution": "Default",
@@ -198,7 +292,7 @@
             "name": "tcpHTTPSProbe",
             "properties": {
               "protocol": "tcp",
-              "port": 443,
+              "port": {{if IsOpenShift}}8443{{else}}443{{end}},
               "intervalInSeconds": "5",
               "numberOfProbes": "2"
             }
@@ -563,12 +657,12 @@
               "backendAddressPool": {
                 "id": "[concat(variables('masterInternalLbID'), '/backendAddressPools/', variables('masterLbBackendPoolName'))]"
               },
-              "backendPort": 4443,
+              "backendPort": {{if IsOpenShift}}8443{{else}}4443{{end}},
               "enableFloatingIP": false,
               "frontendIPConfiguration": {
                 "id": "[variables('masterInternalLbIPConfigID')]"
               },
-              "frontendPort": 443,
+              "frontendPort": {{if IsOpenShift}}8443{{else}}443{{end}},
               "idleTimeoutInMinutes": 5,
               "protocol": "tcp"
             }
@@ -580,7 +674,7 @@
             "properties": {
               "intervalInSeconds": "5",
               "numberOfProbes": "2",
-              "port": 4443,
+              "port": {{if IsOpenShift}}8443{{else}}4443{{end}},
               "protocol": "tcp"
             }
           }
@@ -637,7 +731,9 @@
         "osProfile": {
           "adminUsername": "[variables('username')]",
           "computername": "[concat(variables('masterVMNamePrefix'), copyIndex(variables('masterOffset')))]",
+          {{if not IsOpenShift}}
           {{GetKubernetesMasterCustomData .}}
+          {{end}}
           "linuxConfiguration": {
             "disablePasswordAuthentication": true,
             "ssh": {
@@ -760,7 +856,11 @@
         "autoUpgradeMinorVersion": true,
         "settings": {},
         "protectedSettings": {
+        {{if IsOpenShift}}
+          "script": "{{ Base64 OpenShiftGetMasterSh }}"
+        {{else}}
           "commandToExecute": "[concat(variables('provisionScriptParametersCommon'),' ',variables('provisionScriptParametersMaster'), ' MASTER_INDEX=',copyIndex(variables('masterOffset')),' /usr/bin/nohup /bin/bash -c \"stat /opt/azure/containers/provision.complete > /dev/null 2>&1 || /bin/bash /opt/azure/containers/provision.sh >> /var/log/azure/cluster-provision.log 2>&1\"')]"
+        {{end}}
         }
       }
     }{{WriteLinkedTemplatesForExtensions}}

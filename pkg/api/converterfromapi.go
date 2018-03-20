@@ -635,10 +635,23 @@ func convertOrchestratorProfileToVLabs(api *OrchestratorProfile, o *vlabs.Orches
 		convertKubernetesConfigToVLabs(api.KubernetesConfig, o.KubernetesConfig)
 	}
 
+	if api.OpenShiftConfig != nil {
+		o.OpenShiftConfig = &vlabs.OpenShiftConfig{}
+		convertOpenShiftConfigToVLabs(api.OpenShiftConfig, o.OpenShiftConfig)
+	}
+
 	if api.DcosConfig != nil {
 		o.DcosConfig = &vlabs.DcosConfig{}
 		convertDcosConfigToVLabs(api.DcosConfig, o.DcosConfig)
 	}
+}
+
+func convertOpenShiftConfigToVLabs(api *OpenShiftConfig, vl *vlabs.OpenShiftConfig) {
+	vl.KubernetesConfig = &vlabs.KubernetesConfig{}
+	if api.KubernetesConfig != nil {
+		convertKubernetesConfigToVLabs(api.KubernetesConfig, vl.KubernetesConfig)
+	}
+	vl.RouterIP = api.RouterIP
 }
 
 func convertDcosConfigToVLabs(api *DcosConfig, vlabs *vlabs.DcosConfig) {
