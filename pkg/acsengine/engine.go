@@ -1710,7 +1710,7 @@ func (t *TemplateGenerator) getTemplateFuncMap(cs *api.ContainerService) templat
 			})
 			return b.String()
 		},
-		"OpenShiftGetNodeSh": func(node string) string {
+		"OpenShiftGetNodeSh": func(isInfra bool) string {
 			tb := MustAsset("openshift/node.sh")
 			t := template.Must(template.New("node").Parse(string(tb)))
 			b := &bytes.Buffer{}
@@ -1718,8 +1718,8 @@ func (t *TemplateGenerator) getTemplateFuncMap(cs *api.ContainerService) templat
 				ConfigBundle string
 				IsInfra      bool
 			}{
-				ConfigBundle: base64.StdEncoding.EncodeToString(cs.Properties.OrchestratorProfile.OpenShiftConfig.ConfigBundles[node]),
-				IsInfra:      cs.Properties.OrchestratorProfile.OpenShiftConfig.InfraNodes[node],
+				ConfigBundle: base64.StdEncoding.EncodeToString(cs.Properties.OrchestratorProfile.OpenShiftConfig.ConfigBundles["bootstrap"]),
+				IsInfra:      isInfra,
 			})
 			return b.String()
 		},
