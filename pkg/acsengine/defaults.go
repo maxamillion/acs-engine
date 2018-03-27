@@ -674,6 +674,14 @@ func openShiftSetDefaultCerts(a *api.Properties) (bool, error) {
 		ExternalMasterHostname: externalMasterHostname,
 		ClusterUsername:        a.OrchestratorProfile.OpenShiftConfig.ClusterUsername,
 		ClusterPassword:        a.OrchestratorProfile.OpenShiftConfig.ClusterPassword,
+		AzureConfig: certgen.AzureConfig{
+			TenantID:        a.AzProfile.TenantID,
+			SubscriptionID:  a.AzProfile.SubscriptionID,
+			AADClientID:     a.ServicePrincipalProfile.ClientID,
+			AADClientSecret: a.ServicePrincipalProfile.Secret,
+			ResourceGroup:   a.AzProfile.ResourceGroup,
+			Location:        a.AzProfile.Location,
+		},
 	}
 	a.OrchestratorProfile.OpenShiftConfig.ExternalMasterHostname = externalMasterHostname
 	a.OrchestratorProfile.OpenShiftConfig.RouterLBHostname = routerLBHostname
