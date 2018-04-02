@@ -74,8 +74,8 @@ type tgzfile struct {
 var _ Filesystem = &tgzfile{}
 
 // NewTGZFile returns a Filesystem interface backed by a tar.gz file
-func NewTGZFile(r io.Writer) (Filesystem, error) {
-	gz := gzip.NewWriter(r)
+func NewTGZFile(w io.Writer) (Filesystem, error) {
+	gz := gzip.NewWriter(w)
 	tw := &tgzfile{
 		gz:   gz,
 		tw:   tar.NewWriter(gz),
