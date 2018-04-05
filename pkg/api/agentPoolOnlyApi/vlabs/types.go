@@ -131,9 +131,6 @@ type AgentPoolProfile struct {
 	VnetSubnetID        string `json:"vnetSubnetID,omitempty"`
 	IsOpenShiftInfra    bool   `json:"isOpenShiftInfra,omitempty"`
 
-	ImageName          string `json:"imageName,omitempty"`
-	ImageResourceGroup string `json:"imageResourceGroup,omitempty"`
-
 	// OSType is the operating system type for agents
 	// Set as nullable to support backward compat because
 	// this property was added later.
