@@ -400,6 +400,14 @@ func convertVLabsProperties(vlabs *vlabs.Properties, api *Properties) {
 		api.AADProfile = &AADProfile{}
 		convertVLabsAADProfile(vlabs.AADProfile, api.AADProfile)
 	}
+	convertVLabsAZProfile(&vlabs.AzProfile, &api.AzProfile)
+}
+
+func convertVLabsAZProfile(vlabs *vlabs.AzProfile, api *AzProfile) {
+	api.Location = vlabs.Location
+	api.ResourceGroup = vlabs.ResourceGroup
+	api.SubscriptionID = vlabs.SubscriptionID
+	api.TenantID = vlabs.TenantID
 }
 
 func convertV20160930LinuxProfile(obj *v20160930.LinuxProfile, api *LinuxProfile) {
