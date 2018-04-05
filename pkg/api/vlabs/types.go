@@ -299,10 +299,7 @@ type DcosConfig struct {
 
 // OpenShiftConfig holds configuration for OpenShift
 type OpenShiftConfig struct {
-	KubernetesConfig   *KubernetesConfig `json:"kubernetesConfig,omitempty"`
-	Location           string            `json:"location,omitempty"`
-	ImageResourceGroup string            `json:"imageResourceGroup,omitempty"`
-	ImageName          string            `json:"imageName,omitempty"`
+	KubernetesConfig *KubernetesConfig `json:"kubernetesConfig,omitempty"`
 }
 
 // MasterProfile represents the definition of the master cluster
@@ -323,9 +320,6 @@ type MasterProfile struct {
 	Distro                   Distro            `json:"distro,omitempty"`
 	KubernetesConfig         *KubernetesConfig `json:"kubernetesConfig,omitempty"`
 	ImageRef                 *ImageReference   `json:"imageReference,omitempty"`
-
-	ImageName          string `json:"imageName,omitempty"`
-	ImageResourceGroup string `json:"imageResourceGroup,omitempty"`
 
 	// subnet is internal
 	subnet string

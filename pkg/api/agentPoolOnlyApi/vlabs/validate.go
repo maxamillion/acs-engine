@@ -1,7 +1,6 @@
 package vlabs
 
 import (
-	"errors"
 	"fmt"
 	"regexp"
 	"strings"
@@ -15,21 +14,8 @@ func init() {
 	validate = validator.New()
 }
 
-func validateImageNameAndGroup(name, resourceGroup string) error {
-	if name == "" && resourceGroup != "" {
-		return errors.New("imageName needs to be specified")
-	}
-	if name != "" && resourceGroup == "" {
-		return errors.New("imageResourceGroup needs to be specified")
-	}
-	return nil
-}
-
 // Validate implements APIObject
 func (a *AgentPoolProfile) Validate() error {
-	if err := validateImageNameAndGroup(a.ImageName, a.ImageResourceGroup); err != nil {
-		return err
-	}
 	// Don't need to call validate.Struct(a)
 	// It is handled by Properties.Validate()
 	return validatePoolName(a.Name)

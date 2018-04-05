@@ -332,9 +332,6 @@ type MasterProfile struct {
 	KubernetesConfig         *KubernetesConfig `json:"kubernetesConfig,omitempty"`
 	ImageRef                 *ImageReference   `json:"imageReference,omitempty"`
 
-	ImageName          string `json:"imageName,omitempty"`
-	ImageResourceGroup string `json:"imageResourceGroup,omitempty"`
-
 	// Master LB public endpoint/FQDN with port
 	// The format will be FQDN:2376
 	// Not used during PUT, returned as part of GET
