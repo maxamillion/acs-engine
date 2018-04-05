@@ -148,7 +148,8 @@ func (o *OrchestratorProfile) Validate(isUpdate bool) error {
 			version := common.RationalizeReleaseAndVersion(
 				o.OrchestratorType,
 				o.OrchestratorRelease,
-				o.OrchestratorVersion)
+				o.OrchestratorVersion,
+				false)
 			if version == "" {
 				return fmt.Errorf("OrchestratorProfile is not able to be rationalized, check supported Release or Version")
 			}
