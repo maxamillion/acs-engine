@@ -763,7 +763,6 @@ func getParameters(cs *api.ContainerService, isClassicMode bool, generatorCode s
 		if len(agentProfile.Ports) > 0 {
 			addValue(parametersMap, fmt.Sprintf("%sEndpointDNSNamePrefix", agentProfile.Name), agentProfile.DNSPrefix)
 		}
-		addValue(parametersMap, fmt.Sprintf("%sIsOpenShiftInfra", agentProfile.Name), agentProfile.IsOpenShiftInfra)
 
 		// Unless distro is defined, default distro is configured by defaults#setAgentNetworkDefaults
 		//   Ignores Windows OS

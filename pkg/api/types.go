@@ -59,7 +59,7 @@ type Properties struct {
 	CustomProfile           *CustomProfile           `json:"customProfile,omitempty"`
 	HostedMasterProfile     *HostedMasterProfile     `json:"hostedMasterProfile,omitempty"`
 	AddonProfiles           map[string]AddonProfile  `json:"addonProfiles,omitempty"`
-	AzProfile               AzProfile                `json:"azProfile,omitempty"`
+	AzProfile               *AzProfile               `json:"azProfile,omitempty"`
 }
 
 // AddonProfile represents an addon for managed cluster

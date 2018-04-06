@@ -40,7 +40,7 @@ type Properties struct {
 	ServicePrincipalProfile *ServicePrincipalProfile `json:"servicePrincipalProfile,omitempty"`
 	CertificateProfile      *CertificateProfile      `json:"certificateProfile,omitempty"`
 	AADProfile              *AADProfile              `json:"aadProfile,omitempty"`
-	AzProfile               AzProfile                `json:"azProfile,omitempty"`
+	AzProfile               *AzProfile               `json:"azProfile,omitempty"`
 }
 
 // AzProfile holds the azure context for where the cluster resides
