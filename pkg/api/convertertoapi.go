@@ -400,7 +400,10 @@ func convertVLabsProperties(vlabs *vlabs.Properties, api *Properties) {
 		api.AADProfile = &AADProfile{}
 		convertVLabsAADProfile(vlabs.AADProfile, api.AADProfile)
 	}
-	convertVLabsAZProfile(&vlabs.AzProfile, &api.AzProfile)
+	if vlabs.AzProfile != nil {
+		api.AzProfile = &AzProfile{}
+		convertVLabsAZProfile(vlabs.AzProfile, api.AzProfile)
+	}
 }
 
 func convertVLabsAZProfile(vlabs *vlabs.AzProfile, api *AzProfile) {
