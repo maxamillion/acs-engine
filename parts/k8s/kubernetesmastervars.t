@@ -373,9 +373,11 @@
     "scope": "[resourceGroup().id]",
     "tenantId": "[subscription().tenantId]",
     "singleQuote": "'",
-    "targetEnvironment": "[parameters('targetEnvironment')]",
-    "dockerEngineDownloadRepo": "[parameters('dockerEngineDownloadRepo')]",
-    "dockerEngineVersion": "[parameters('dockerEngineVersion')]"
+    "targetEnvironment": "[parameters('targetEnvironment')]"
+{{if not IsOpenShift}}
+    , "dockerEngineDownloadRepo": "[parameters('dockerEngineDownloadRepo')]"
+    , "dockerEngineVersion": "[parameters('dockerEngineVersion')]"
+{{end}}
 {{if .LinuxProfile.HasSecrets}}
     , "linuxProfileSecrets" :
       [
