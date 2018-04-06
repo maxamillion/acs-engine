@@ -26,4 +26,3 @@
     "{{.Name}}osImageVersion": "[parameters('{{.Name}}osImageVersion')]",
     "{{.Name}}osImageName": "[parameters('{{.Name}}osImageName')]",
     "{{.Name}}osImageResourceGroup": "[parameters('{{.Name}}osImageResourceGroup')]",
-    "{{.Name}}IsOpenShiftInfra": "[parameters('{{.Name}}IsOpenShiftInfra')]",

@@ -38,13 +38,6 @@
       },
       "type": "string"
     },
-    "{{.Name}}IsOpenShiftInfra": {
-      "defaultValue": "",
-      "metadata": {
-        "description": "Whether the current agent is an OpensShift infrastructure node or not."
-      },
-      "type": "bool"
-    },
     "{{.Name}}osImageName": {
       "defaultValue": "",
       "metadata": {
