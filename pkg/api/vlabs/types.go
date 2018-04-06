@@ -398,9 +398,6 @@ type AgentPoolProfile struct {
 	CustomNodeLabels      map[string]string `json:"customNodeLabels,omitempty"`
 	PreProvisionExtension *Extension        `json:"preProvisionExtension"`
 	Extensions            []Extension       `json:"extensions"`
-
-	ImageName          string `json:"imageName,omitempty"`
-	ImageResourceGroup string `json:"imageResourceGroup,omitempty"`
 }
 
 // AADProfile specifies attributes for AAD integration

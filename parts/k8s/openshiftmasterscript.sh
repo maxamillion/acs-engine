@@ -208,11 +208,11 @@ while true; do
   sleep 10
 done
 
-for file in /usr/share/ansible/openshift-ansible/roles/openshift_examples/files/examples/v3.7/db-templates/*.json \
-    /usr/share/ansible/openshift-ansible/roles/openshift_examples/files/examples/v3.7/image-streams/*-rhel7.json \
-	  /usr/share/ansible/openshift-ansible/roles/openshift_examples/files/examples/v3.7/quickstart-templates/*.json \
-	  /usr/share/ansible/openshift-ansible/roles/openshift_examples/files/examples/v3.7/xpaas-streams/*.json \
-	  /usr/share/ansible/openshift-ansible/roles/openshift_examples/files/examples/v3.7/xpaas-templates/*.json; do
+for file in /usr/share/ansible/openshift-ansible/roles/openshift_examples/files/examples/v3.9/db-templates/*.json \
+    /usr/share/ansible/openshift-ansible/roles/openshift_examples/files/examples/v3.9/image-streams/*-rhel7.json \
+	  /usr/share/ansible/openshift-ansible/roles/openshift_examples/files/examples/v3.9/quickstart-templates/*.json \
+	  /usr/share/ansible/openshift-ansible/roles/openshift_examples/files/examples/v3.9/xpaas-streams/*.json \
+	  /usr/share/ansible/openshift-ansible/roles/openshift_examples/files/examples/v3.9/xpaas-templates/*.json; do
 	oc create -n openshift -f $file
 done
 
