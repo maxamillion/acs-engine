@@ -625,9 +625,9 @@ func convertVLabsDcosConfig(vlabs *vlabs.DcosConfig, api *DcosConfig) {
 }
 
 func convertVLabsOpenShiftConfig(vlabs *vlabs.OpenShiftConfig, api *OpenShiftConfig) {
-	// TODO: This is a hack to avoid breaking the rest of the acs-engine
+	// NOTE: This is a hack to avoid breaking the rest of the acs-engine
 	// code when KubernetesConfig is accessed for various things. We don't
-	// use anything from it today,
+	// use anything from it today. Maybe do something cleaner here.
 	api.KubernetesConfig = &KubernetesConfig{}
 	if vlabs.KubernetesConfig != nil {
 		convertVLabsKubernetesConfig(vlabs.KubernetesConfig, api.KubernetesConfig)

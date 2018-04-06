@@ -139,8 +139,13 @@ func TestGetOrchestratorVersionProfileListV20170930(t *testing.T) {
 	Expect(e).To(BeNil())
 	numSwarmVersions := 1
 	numDockerCEVersions := 1
-	numOpenShiftVersions := 1
-	totalNumVersions := numOpenShiftVersions + numSwarmVersions + numDockerCEVersions + len(common.GetAllSupportedKubernetesVersions()) + len(common.AllDCOSSupportedVersions)
+
+	totalNumVersions := numSwarmVersions +
+		numDockerCEVersions +
+		len(common.GetAllSupportedKubernetesVersions()) +
+		len(common.AllDCOSSupportedVersions) +
+		len(common.GetAllSupportedOpenShiftVersions())
+
 	Expect(len(list.Properties.Orchestrators)).To(Equal(totalNumVersions))
 
 	// v20170930 - kubernetes only
