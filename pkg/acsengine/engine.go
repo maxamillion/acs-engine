@@ -919,7 +919,7 @@ func (t *TemplateGenerator) getTemplateFuncMap(cs *api.ContainerService) templat
 			return buf.String()
 		},
 		"GetKubeletConfigKeyVals": func(kc *api.KubernetesConfig) string {
-			if cs.Properties.OrchestratorProfile.KubernetesConfig == nil || kc == nil {
+			if kc == nil {
 				return ""
 			}
 			kubeletConfig := cs.Properties.OrchestratorProfile.KubernetesConfig.KubeletConfig
@@ -1671,23 +1671,15 @@ func (t *TemplateGenerator) getTemplateFuncMap(cs *api.ContainerService) templat
 			return fmt.Sprintf("\"defaultValue\": \"%s\",", val)
 		},
 		"UseCloudControllerManager": func() bool {
-			return cs.Properties.OrchestratorProfile.KubernetesConfig != nil &&
-				cs.Properties.OrchestratorProfile.KubernetesConfig.UseCloudControllerManager != nil &&
-				*cs.Properties.OrchestratorProfile.KubernetesConfig.UseCloudControllerManager
+			return cs.Properties.OrchestratorProfile.KubernetesConfig.UseCloudControllerManager != nil && *cs.Properties.OrchestratorProfile.KubernetesConfig.UseCloudControllerManager
 		},
 		"AdminGroupID": func() bool {
 			return cs.Properties.AADProfile != nil && cs.Properties.AADProfile.AdminGroupID != ""
 		},
 		"EnableDataEncryptionAtRest": func() bool {
-			if cs.Properties.OrchestratorProfile.KubernetesConfig == nil {
-				return false
-			}
 			return helpers.IsTrueBoolPointer(cs.Properties.OrchestratorProfile.KubernetesConfig.EnableDataEncryptionAtRest)
 		},
 		"EnableAggregatedAPIs": func() bool {
-			if cs.Properties.OrchestratorProfile.KubernetesConfig == nil {
-				return false
-			}
 			if cs.Properties.OrchestratorProfile.KubernetesConfig.EnableAggregatedAPIs {
 				return true
 			} else if common.IsKubernetesVersionGe(cs.Properties.OrchestratorProfile.OrchestratorVersion, "1.9.0") {
@@ -1696,9 +1688,6 @@ func (t *TemplateGenerator) getTemplateFuncMap(cs *api.ContainerService) templat
 			return false
 		},
 		"EnablePodSecurityPolicy": func() bool {
-			if cs.Properties.OrchestratorProfile.KubernetesConfig == nil {
-				return false
-			}
 			return helpers.IsTrueBoolPointer(cs.Properties.OrchestratorProfile.KubernetesConfig.EnablePodSecurityPolicy)
 		},
 		"OpenShiftGetMasterSh": func() string {
