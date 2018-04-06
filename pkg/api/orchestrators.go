@@ -252,7 +252,7 @@ func openShiftInfo(csOrch *OrchestratorProfile) ([]*OrchestratorVersionProfile, 
 		if err != nil {
 			return nil, err
 		}
-		cons, err := semver.NewConstraint("<3.7.0")
+		cons, err := semver.NewConstraint("<3.9.0")
 		if err != nil {
 			return nil, err
 		}

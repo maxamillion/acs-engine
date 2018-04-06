@@ -17,8 +17,10 @@
     "masterProfile": {
       "count": 1,
       "dnsPrefix": "YOUR DNS PREFIX",
-      "imageName": "YOUR IMAGE",
-      "imageResourceGroup": "YOUR IMAGE RESOURCE GROUP",
+      "imageReference": {
+        "name": "YOUR IMAGE",
+        "resourceGroup": "YOUR IMAGE RESOURCE GROUP",
+      },
       "storageProfile": "ManagedDisks",
       "vmSize": "Standard_D4s_v3"
     },
@@ -26,8 +28,10 @@
       {
         "availabilityProfile": "AvailabilitySet",
         "count": 1,
-        "imageName": "YOUR IMAGE",
-        "imageResourceGroup": "YOUR IMAGE RESOURCE GROUP",
+        "imageReference": {
+          "name": "YOUR IMAGE",
+          "resourceGroup": "YOUR IMAGE RESOURCE GROUP",
+        },
         "name": "compute",
         "storageProfile": "ManagedDisks",
         "vmSize": "Standard_D4s_v3"
@@ -35,8 +39,10 @@
       {
         "availabilityProfile": "AvailabilitySet",
         "count": 1,
-        "imageName": "YOUR IMAGE",
-        "imageResourceGroup": "YOUR IMAGE RESOURCE GROUP",
+        "imageReference": {
+          "name": "YOUR IMAGE",
+          "resourceGroup": "YOUR IMAGE RESOURCE GROUP",
+        },
         "isOpenShiftInfra": true,
         "name": "infra",
         "storageProfile": "ManagedDisks",
@@ -54,8 +60,8 @@
       }
     },
     "servicePrincipalProfile": {
-      "clientId": "y",
-      "secret": "z"
+      "clientId": "YOUR CLIENTID",
+      "secret": "YOUR SECRET"
     },
     "certificateProfile": {
       "caCertificate": "caCertificate",

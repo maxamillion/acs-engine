@@ -60,15 +60,15 @@ const (
 )
 
 const (
-	// OpenShiftVersion3Dot7Dot0 is the major.minor.patch string for the 3.7.0 version of OpenShift
-	OpenShiftVersion3Dot7Dot0 string = "3.7.0"
+	// OpenShiftVersion3Dot9Dot0 is the major.minor.patch string for the 3.9.0 version of OpenShift
+	OpenShiftVersion3Dot9Dot0 string = "3.9.0"
 	// OpenShiftDefaultVersion is the default major.minor.patch version for OpenShift
-	OpenShiftDefaultVersion string = OpenShiftVersion3Dot7Dot0
+	OpenShiftDefaultVersion string = OpenShiftVersion3Dot9Dot0
 )
 
 // GetAllSupportedOpenShiftVersions returns a slice of all supported OpenShift versions.
 func GetAllSupportedOpenShiftVersions() []string {
-	return []string{OpenShiftVersion3Dot7Dot0}
+	return []string{OpenShiftVersion3Dot9Dot0}
 }
 
 const (
