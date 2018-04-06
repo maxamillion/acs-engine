@@ -28,6 +28,7 @@
       },
       "type": "int"
     },
+{{if not IsOpenShift}}
     "etcdServerCertificate": {
       "metadata": {
         "description": "The base 64 server certificate used on the master"
@@ -117,6 +118,8 @@
       {{end}}
     {{end}}
 {{end}}
+{{end}}
+{{if not IsOpenShift}}
     "apiServerCertificate": {
       "metadata": {
         "description": "The base 64 server certificate used on the master"
@@ -166,6 +169,7 @@
       },
       "type": "securestring"
     },
+{{end}}
     "generatorCode": {
       {{PopulateClassicModeDefaultValue "generatorCode"}}
       "metadata": {
