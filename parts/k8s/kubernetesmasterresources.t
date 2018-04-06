@@ -779,7 +779,7 @@
         "osProfile": {
           "adminUsername": "[variables('username')]",
           "computername": "[concat(variables('masterVMNamePrefix'), copyIndex(variables('masterOffset')))]",
-          {{if not IsOpenShift}}
+          {{if IsKubernetes}}
           {{GetKubernetesMasterCustomData .}}
           {{end}}
           "linuxConfiguration": {
