@@ -14,7 +14,7 @@ oc patch project default -p '{"metadata":{"annotations":{"openshift.io/node-sele
 oc adm registry --images="$IMAGE_BASE-\${component}:\${version}" --selector='region=infra'
 
 # Deploy the router reusing relevant parts from openshift-ansible
-ANSIBLE_ROLES_PATH=/usr/share/ansible/openshift-ansible/roles/ ansible-playbook -c local deploy-router.yml -i azure-local-master-inventory.yml
+ANSIBLE_ROLES_PATH=/usr/share/ansible/openshift-ansible/roles/ ansible-playbook -c local deploy-router-registry.yml -i azure-local-master-inventory.yml
 
 oc create -f - <<'EOF'
 kind: Project
